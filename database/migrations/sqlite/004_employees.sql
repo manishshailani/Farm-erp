@@ -1,4 +1,4 @@
-CREATE TABLE employees (
+CREATE TABLE IF NOT EXISTS employees (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NULL,
     employee_code TEXT NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE employees (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
-CREATE TABLE employee_tasks (
+CREATE TABLE IF NOT EXISTS employee_tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     description TEXT NULL,

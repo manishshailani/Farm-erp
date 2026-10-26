@@ -1,4 +1,4 @@
-CREATE TABLE customers (
+CREATE TABLE IF NOT EXISTS customers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL, -- login account for the public customer portal
     name VARCHAR(150) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE customers (
     KEY idx_customer_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE customer_addresses (
+CREATE TABLE IF NOT EXISTS customer_addresses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT NOT NULL,
     label VARCHAR(50) NOT NULL DEFAULT 'Home',
@@ -32,7 +32,7 @@ CREATE TABLE customer_addresses (
 -- products that are NOT linked to an inventory item; for ones that are,
 -- OrderService reads/decrements the linked inventory_items row instead so
 -- the two bookkeeping systems never disagree.
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sku VARCHAR(50) NOT NULL,
     name VARCHAR(150) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE products (
     CONSTRAINT fk_product_item FOREIGN KEY (linked_inventory_item_id) REFERENCES inventory_items(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE carts (
+CREATE TABLE IF NOT EXISTS carts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT NOT NULL,
     created_at DATETIME NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE carts (
     CONSTRAINT fk_cart_customer FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE cart_items (
+CREATE TABLE IF NOT EXISTS cart_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     cart_id INT NOT NULL,
     product_id INT NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE cart_items (
 -- confirmed, awaiting_payment, partially_paid, processing,
 -- ready_for_dispatch, dispatched, delivered, completed, cancelled,
 -- refund_pending, refunded, returned.
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_number VARCHAR(30) NOT NULL,
     customer_id INT NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE orders (
     KEY idx_order_customer (customer_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE order_items (
+CREATE TABLE IF NOT EXISTS order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
     product_id INT NOT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE order_items (
     CONSTRAINT fk_order_item_product FOREIGN KEY (product_id) REFERENCES products(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE order_status_history (
+CREATE TABLE IF NOT EXISTS order_status_history (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
     status VARCHAR(30) NOT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE order_status_history (
     KEY idx_history_order (order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE invoices (
+CREATE TABLE IF NOT EXISTS invoices (
     id INT AUTO_INCREMENT PRIMARY KEY,
     invoice_number VARCHAR(30) NOT NULL,
     order_id INT NOT NULL,
@@ -140,7 +140,7 @@ CREATE TABLE invoices (
     CONSTRAINT fk_invoice_customer FOREIGN KEY (customer_id) REFERENCES customers(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     invoice_id INT NOT NULL,
     amount DECIMAL(12,2) NOT NULL,

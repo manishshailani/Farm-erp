@@ -1,4 +1,4 @@
-CREATE TABLE accounts (
+CREATE TABLE IF NOT EXISTS accounts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     type TEXT NOT NULL DEFAULT 'cash',
@@ -8,7 +8,7 @@ CREATE TABLE accounts (
     UNIQUE (name)
 );
 
-CREATE TABLE financial_transactions (
+CREATE TABLE IF NOT EXISTS financial_transactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     txn_date TEXT NOT NULL,
     type TEXT NOT NULL,

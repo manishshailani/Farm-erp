@@ -1,4 +1,4 @@
-CREATE TABLE orchard_blocks (
+CREATE TABLE IF NOT EXISTS orchard_blocks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     species TEXT NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE orchard_blocks (
     created_at TEXT NOT NULL
 );
 
-CREATE TABLE orchard_trees (
+CREATE TABLE IF NOT EXISTS orchard_trees (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     tree_code TEXT NOT NULL,
     block_id INTEGER NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE orchard_trees (
     FOREIGN KEY (block_id) REFERENCES orchard_blocks(id) ON DELETE CASCADE
 );
 
-CREATE TABLE orchard_harvests (
+CREATE TABLE IF NOT EXISTS orchard_harvests (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     block_id INTEGER NOT NULL,
     tree_id INTEGER NULL,
@@ -35,7 +35,7 @@ CREATE TABLE orchard_harvests (
     FOREIGN KEY (tree_id) REFERENCES orchard_trees(id)
 );
 
-CREATE TABLE ponds (
+CREATE TABLE IF NOT EXISTS ponds (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     surface_area_sqm DECIMAL(10,2) NULL,
@@ -46,7 +46,7 @@ CREATE TABLE ponds (
     UNIQUE (name)
 );
 
-CREATE TABLE pond_stocking_batches (
+CREATE TABLE IF NOT EXISTS pond_stocking_batches (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     pond_id INTEGER NOT NULL,
     species TEXT NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE pond_stocking_batches (
     FOREIGN KEY (pond_id) REFERENCES ponds(id) ON DELETE CASCADE
 );
 
-CREATE TABLE pond_water_quality_readings (
+CREATE TABLE IF NOT EXISTS pond_water_quality_readings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     pond_id INTEGER NOT NULL,
     measured_at TEXT NOT NULL,

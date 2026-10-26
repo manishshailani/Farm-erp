@@ -1,6 +1,6 @@
 -- Core authentication, RBAC and audit tables. MySQL 8 / MariaDB 10.6+ dialect.
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     email VARCHAR(190) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE users (
     UNIQUE KEY uq_users_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE roles (
+CREATE TABLE IF NOT EXISTS roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(255) NULL,
@@ -20,14 +20,14 @@ CREATE TABLE roles (
     UNIQUE KEY uq_roles_name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE permissions (
+CREATE TABLE IF NOT EXISTS permissions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     `key` VARCHAR(100) NOT NULL,
     description VARCHAR(255) NULL,
     UNIQUE KEY uq_permissions_key (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE role_permissions (
+CREATE TABLE IF NOT EXISTS role_permissions (
     role_id INT NOT NULL,
     permission_id INT NOT NULL,
     PRIMARY KEY (role_id, permission_id),
@@ -35,7 +35,7 @@ CREATE TABLE role_permissions (
     CONSTRAINT fk_rp_permission FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE user_roles (
+CREATE TABLE IF NOT EXISTS user_roles (
     user_id INT NOT NULL,
     role_id INT NOT NULL,
     PRIMARY KEY (user_id, role_id),
@@ -43,7 +43,7 @@ CREATE TABLE user_roles (
     CONSTRAINT fk_ur_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE password_resets (
+CREATE TABLE IF NOT EXISTS password_resets (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     token_hash VARCHAR(255) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE password_resets (
     CONSTRAINT fk_pr_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE login_attempts (
+CREATE TABLE IF NOT EXISTS login_attempts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(190) NOT NULL,
     ip_address VARCHAR(45) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE login_attempts (
     KEY idx_login_attempts_email_time (email, attempted_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE audit_logs (
+CREATE TABLE IF NOT EXISTS audit_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL,
     action VARCHAR(100) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE audit_logs (
     CONSTRAINT fk_audit_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE settings (
+CREATE TABLE IF NOT EXISTS settings (
     `key` VARCHAR(100) NOT NULL PRIMARY KEY,
     `value` TEXT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

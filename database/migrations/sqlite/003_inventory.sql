@@ -1,10 +1,10 @@
-CREATE TABLE inventory_categories (
+CREATE TABLE IF NOT EXISTS inventory_categories (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     UNIQUE (name)
 );
 
-CREATE TABLE inventory_items (
+CREATE TABLE IF NOT EXISTS inventory_items (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     sku TEXT NOT NULL,
     name TEXT NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE inventory_items (
     FOREIGN KEY (category_id) REFERENCES inventory_categories(id)
 );
 
-CREATE TABLE inventory_batches (
+CREATE TABLE IF NOT EXISTS inventory_batches (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     item_id INTEGER NOT NULL,
     batch_number TEXT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE inventory_batches (
 CREATE INDEX idx_batch_item ON inventory_batches (item_id);
 CREATE INDEX idx_batch_expiry ON inventory_batches (expiry_date);
 
-CREATE TABLE stock_movements (
+CREATE TABLE IF NOT EXISTS stock_movements (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     item_id INTEGER NOT NULL,
     batch_id INTEGER NULL,

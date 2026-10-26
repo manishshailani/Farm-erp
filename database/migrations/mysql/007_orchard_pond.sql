@@ -5,7 +5,7 @@
 -- water-quality-alerting feature set described in the master spec (see
 -- docs/FINAL_ACCEPTANCE_REPORT.md "Known limitations").
 
-CREATE TABLE orchard_blocks (
+CREATE TABLE IF NOT EXISTS orchard_blocks (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     species VARCHAR(100) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE orchard_blocks (
     created_at DATETIME NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE orchard_trees (
+CREATE TABLE IF NOT EXISTS orchard_trees (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tree_code VARCHAR(50) NOT NULL,
     block_id INT NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE orchard_trees (
     CONSTRAINT fk_tree_block FOREIGN KEY (block_id) REFERENCES orchard_blocks(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE orchard_harvests (
+CREATE TABLE IF NOT EXISTS orchard_harvests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     block_id INT NOT NULL,
     tree_id INT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE orchard_harvests (
     CONSTRAINT fk_harvest_tree FOREIGN KEY (tree_id) REFERENCES orchard_trees(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE ponds (
+CREATE TABLE IF NOT EXISTS ponds (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     surface_area_sqm DECIMAL(10,2) NULL,
@@ -53,7 +53,7 @@ CREATE TABLE ponds (
     UNIQUE KEY uq_pond_name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE pond_stocking_batches (
+CREATE TABLE IF NOT EXISTS pond_stocking_batches (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pond_id INT NOT NULL,
     species VARCHAR(100) NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE pond_stocking_batches (
     CONSTRAINT fk_stocking_pond FOREIGN KEY (pond_id) REFERENCES ponds(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE pond_water_quality_readings (
+CREATE TABLE IF NOT EXISTS pond_water_quality_readings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pond_id INT NOT NULL,
     measured_at DATETIME NOT NULL,

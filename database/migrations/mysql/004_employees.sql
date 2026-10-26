@@ -1,4 +1,4 @@
-CREATE TABLE employees (
+CREATE TABLE IF NOT EXISTS employees (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL, -- linked login account, if the employee also uses the system
     employee_code VARCHAR(50) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE employees (
     CONSTRAINT fk_employee_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE employee_tasks (
+CREATE TABLE IF NOT EXISTS employee_tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(150) NOT NULL,
     description TEXT NULL,

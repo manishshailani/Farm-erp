@@ -1,4 +1,4 @@
-CREATE TABLE customers (
+CREATE TABLE IF NOT EXISTS customers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NULL,
     name TEXT NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE customers (
 );
 CREATE INDEX idx_customer_email ON customers (email);
 
-CREATE TABLE customer_addresses (
+CREATE TABLE IF NOT EXISTS customer_addresses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     customer_id INTEGER NOT NULL,
     label TEXT NOT NULL DEFAULT 'Home',
@@ -25,7 +25,7 @@ CREATE TABLE customer_addresses (
     FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
 );
 
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     sku TEXT NOT NULL,
     name TEXT NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE products (
     FOREIGN KEY (linked_inventory_item_id) REFERENCES inventory_items(id)
 );
 
-CREATE TABLE carts (
+CREATE TABLE IF NOT EXISTS carts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     customer_id INTEGER NOT NULL,
     created_at TEXT NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE carts (
     FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
 );
 
-CREATE TABLE cart_items (
+CREATE TABLE IF NOT EXISTS cart_items (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cart_id INTEGER NOT NULL,
     product_id INTEGER NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE cart_items (
     UNIQUE (cart_id, product_id)
 );
 
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     order_number TEXT NOT NULL,
     customer_id INTEGER NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE orders (
 CREATE INDEX idx_order_status ON orders (status);
 CREATE INDEX idx_order_customer ON orders (customer_id);
 
-CREATE TABLE order_items (
+CREATE TABLE IF NOT EXISTS order_items (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     order_id INTEGER NOT NULL,
     product_id INTEGER NOT NULL,
@@ -102,7 +102,7 @@ CREATE TABLE order_items (
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-CREATE TABLE order_status_history (
+CREATE TABLE IF NOT EXISTS order_status_history (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     order_id INTEGER NOT NULL,
     status TEXT NOT NULL,
@@ -113,7 +113,7 @@ CREATE TABLE order_status_history (
 );
 CREATE INDEX idx_history_order ON order_status_history (order_id);
 
-CREATE TABLE invoices (
+CREATE TABLE IF NOT EXISTS invoices (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     invoice_number TEXT NOT NULL,
     order_id INTEGER NOT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE invoices (
     FOREIGN KEY (customer_id) REFERENCES customers(id)
 );
 
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     invoice_id INTEGER NOT NULL,
     amount DECIMAL(12,2) NOT NULL,

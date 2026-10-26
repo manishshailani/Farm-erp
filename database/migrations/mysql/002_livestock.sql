@@ -1,13 +1,13 @@
 -- Livestock master data, RFID tags and lifecycle/vaccination events.
 
-CREATE TABLE species (
+CREATE TABLE IF NOT EXISTS species (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     tracking_level VARCHAR(20) NOT NULL DEFAULT 'individual', -- 'individual' or 'batch'
     UNIQUE KEY uq_species_name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE breeds (
+CREATE TABLE IF NOT EXISTS breeds (
     id INT AUTO_INCREMENT PRIMARY KEY,
     species_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE breeds (
     UNIQUE KEY uq_breed_species_name (species_id, name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE animals (
+CREATE TABLE IF NOT EXISTS animals (
     id INT AUTO_INCREMENT PRIMARY KEY,
     animal_code VARCHAR(50) NOT NULL,
     species_id INT NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE animals (
 -- deactivated and the same physical number re-registered later (e.g. a
 -- replaced ear tag), so uniqueness is enforced on the *active* tag number
 -- only, via a generated column + unique index (MySQL 8.0.13+).
-CREATE TABLE rfid_tags (
+CREATE TABLE IF NOT EXISTS rfid_tags (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tag_number VARCHAR(100) NOT NULL,
     animal_id INT NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE rfid_tags (
     KEY idx_rfid_tag_number (tag_number)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE rfid_scan_log (
+CREATE TABLE IF NOT EXISTS rfid_scan_log (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tag_number VARCHAR(100) NOT NULL,
     animal_id INT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE rfid_scan_log (
     KEY idx_scan_log_tag (tag_number)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE animal_weight_events (
+CREATE TABLE IF NOT EXISTS animal_weight_events (
     id INT AUTO_INCREMENT PRIMARY KEY,
     animal_id INT NOT NULL,
     recorded_at DATETIME NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE animal_weight_events (
 -- event_type is an open vocabulary (documented in docs/DATA_DICTIONARY.md)
 -- rather than a rigid ENUM, matching the spec's instruction to support
 -- configurable, species-appropriate workflows.
-CREATE TABLE animal_lifecycle_events (
+CREATE TABLE IF NOT EXISTS animal_lifecycle_events (
     id INT AUTO_INCREMENT PRIMARY KEY,
     animal_id INT NOT NULL,
     event_type VARCHAR(50) NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE animal_lifecycle_events (
     KEY idx_lifecycle_type (event_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE vaccinations (
+CREATE TABLE IF NOT EXISTS vaccinations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     animal_id INT NOT NULL,
     vaccine_name VARCHAR(150) NOT NULL,

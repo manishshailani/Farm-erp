@@ -4,13 +4,13 @@
 -- each stock_movements insert -- it must never be written independently of
 -- a movement row, or the two will drift.
 
-CREATE TABLE inventory_categories (
+CREATE TABLE IF NOT EXISTS inventory_categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     UNIQUE KEY uq_inventory_category_name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE inventory_items (
+CREATE TABLE IF NOT EXISTS inventory_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sku VARCHAR(50) NOT NULL,
     name VARCHAR(150) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE inventory_items (
     CONSTRAINT fk_item_category FOREIGN KEY (category_id) REFERENCES inventory_categories(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE inventory_batches (
+CREATE TABLE IF NOT EXISTS inventory_batches (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
     batch_number VARCHAR(100) NULL,
@@ -47,7 +47,7 @@ CREATE TABLE inventory_batches (
 -- FIFO consumption: StockService always deducts from the oldest
 -- quantity_remaining > 0 batch(es) first, recording one stock_movements
 -- row per batch touched so the batch-level cost basis is preserved.
-CREATE TABLE stock_movements (
+CREATE TABLE IF NOT EXISTS stock_movements (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL,
     batch_id INT NULL,

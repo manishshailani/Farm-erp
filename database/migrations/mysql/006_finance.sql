@@ -1,7 +1,7 @@
 -- Income/expense ledger. "transfer" rows move money between two of the
 -- farm's own accounts and must never be summed as income or expense in
 -- reports (see FinanceService::profitAndLoss, which filters type != 'transfer').
-CREATE TABLE accounts (
+CREATE TABLE IF NOT EXISTS accounts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     type VARCHAR(20) NOT NULL DEFAULT 'cash', -- cash, bank
@@ -11,7 +11,7 @@ CREATE TABLE accounts (
     UNIQUE KEY uq_account_name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE financial_transactions (
+CREATE TABLE IF NOT EXISTS financial_transactions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     txn_date DATE NOT NULL,
     type VARCHAR(10) NOT NULL, -- income, expense, transfer

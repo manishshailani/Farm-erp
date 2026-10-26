@@ -3,7 +3,7 @@
 -- MySQL files under database/migrations/mysql/ are authoritative for
 -- production (XAMPP) deployment. See docs/DATABASE_PORTABILITY.md.
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE users (
     UNIQUE (email)
 );
 
-CREATE TABLE roles (
+CREATE TABLE IF NOT EXISTS roles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     description TEXT NULL,
@@ -23,14 +23,14 @@ CREATE TABLE roles (
     UNIQUE (name)
 );
 
-CREATE TABLE permissions (
+CREATE TABLE IF NOT EXISTS permissions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     `key` TEXT NOT NULL,
     description TEXT NULL,
     UNIQUE (`key`)
 );
 
-CREATE TABLE role_permissions (
+CREATE TABLE IF NOT EXISTS role_permissions (
     role_id INTEGER NOT NULL,
     permission_id INTEGER NOT NULL,
     PRIMARY KEY (role_id, permission_id),
@@ -38,7 +38,7 @@ CREATE TABLE role_permissions (
     FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE
 );
 
-CREATE TABLE user_roles (
+CREATE TABLE IF NOT EXISTS user_roles (
     user_id INTEGER NOT NULL,
     role_id INTEGER NOT NULL,
     PRIMARY KEY (user_id, role_id),
@@ -46,7 +46,7 @@ CREATE TABLE user_roles (
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 );
 
-CREATE TABLE password_resets (
+CREATE TABLE IF NOT EXISTS password_resets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     token_hash TEXT NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE password_resets (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE login_attempts (
+CREATE TABLE IF NOT EXISTS login_attempts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL,
     ip_address TEXT NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE login_attempts (
 );
 CREATE INDEX idx_login_attempts_email_time ON login_attempts (email, attempted_at);
 
-CREATE TABLE audit_logs (
+CREATE TABLE IF NOT EXISTS audit_logs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NULL,
     action TEXT NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE audit_logs (
 CREATE INDEX idx_audit_entity ON audit_logs (entity_type, entity_id);
 CREATE INDEX idx_audit_user ON audit_logs (user_id);
 
-CREATE TABLE settings (
+CREATE TABLE IF NOT EXISTS settings (
     `key` TEXT NOT NULL PRIMARY KEY,
     `value` TEXT NULL
 );

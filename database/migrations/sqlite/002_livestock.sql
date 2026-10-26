@@ -1,11 +1,11 @@
-CREATE TABLE species (
+CREATE TABLE IF NOT EXISTS species (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     tracking_level TEXT NOT NULL DEFAULT 'individual',
     UNIQUE (name)
 );
 
-CREATE TABLE breeds (
+CREATE TABLE IF NOT EXISTS breeds (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     species_id INTEGER NOT NULL,
     name TEXT NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE breeds (
     UNIQUE (species_id, name)
 );
 
-CREATE TABLE animals (
+CREATE TABLE IF NOT EXISTS animals (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     animal_code TEXT NOT NULL,
     species_id INTEGER NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE animals (
 CREATE INDEX idx_animal_species ON animals (species_id);
 CREATE INDEX idx_animal_status ON animals (status);
 
-CREATE TABLE rfid_tags (
+CREATE TABLE IF NOT EXISTS rfid_tags (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     tag_number TEXT NOT NULL,
     animal_id INTEGER NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE rfid_tags (
 );
 CREATE INDEX idx_rfid_tag_number ON rfid_tags (tag_number);
 
-CREATE TABLE rfid_scan_log (
+CREATE TABLE IF NOT EXISTS rfid_scan_log (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     tag_number TEXT NOT NULL,
     animal_id INTEGER NULL,
@@ -74,7 +74,7 @@ CREATE TABLE rfid_scan_log (
 );
 CREATE INDEX idx_scan_log_tag ON rfid_scan_log (tag_number);
 
-CREATE TABLE animal_weight_events (
+CREATE TABLE IF NOT EXISTS animal_weight_events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     animal_id INTEGER NOT NULL,
     recorded_at TEXT NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE animal_weight_events (
 );
 CREATE INDEX idx_weight_animal_time ON animal_weight_events (animal_id, recorded_at);
 
-CREATE TABLE animal_lifecycle_events (
+CREATE TABLE IF NOT EXISTS animal_lifecycle_events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     animal_id INTEGER NOT NULL,
     event_type TEXT NOT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE animal_lifecycle_events (
 CREATE INDEX idx_lifecycle_animal ON animal_lifecycle_events (animal_id);
 CREATE INDEX idx_lifecycle_type ON animal_lifecycle_events (event_type);
 
-CREATE TABLE vaccinations (
+CREATE TABLE IF NOT EXISTS vaccinations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     animal_id INTEGER NOT NULL,
     vaccine_name TEXT NOT NULL,
