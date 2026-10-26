@@ -18,7 +18,7 @@ CREATE TABLE orchard_trees (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tree_code VARCHAR(50) NOT NULL,
     block_id INT NOT NULL,
-    row_number INT NULL,
+    tree_row INT NULL, -- named tree_row, not row_number: ROW_NUMBER is a reserved keyword on MySQL 8+/MariaDB 10.2+ (window function) and is rejected as a bare column name
     position_in_row INT NULL,
     planting_date DATE NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'alive', -- alive, dead, replaced

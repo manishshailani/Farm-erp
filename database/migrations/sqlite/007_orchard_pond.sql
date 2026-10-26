@@ -11,7 +11,7 @@ CREATE TABLE orchard_trees (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     tree_code TEXT NOT NULL,
     block_id INTEGER NOT NULL,
-    row_number INTEGER NULL,
+    tree_row INTEGER NULL, -- named tree_row, not row_number: kept identical to the MySQL dialect (which must avoid the reserved ROW_NUMBER keyword) for schema parity, see docs/DATABASE_PORTABILITY.md
     position_in_row INTEGER NULL,
     planting_date TEXT NULL,
     status TEXT NOT NULL DEFAULT 'alive',

@@ -64,7 +64,7 @@ final class OrchardService
         return (int) Database::transaction(function ($pdo) use ($data, $blockId, $treeCode) {
             $now = date('Y-m-d H:i:s');
             $pdo->prepare(
-                'INSERT INTO orchard_trees (tree_code, block_id, row_number, position_in_row, planting_date, status, notes, created_at)
+                'INSERT INTO orchard_trees (tree_code, block_id, tree_row, position_in_row, planting_date, status, notes, created_at)
                  VALUES (:code, :block_id, :row, :pos, :planted, :status, :notes, :created_at)'
             )->execute([
                 'code' => $treeCode,

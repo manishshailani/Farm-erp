@@ -14,7 +14,7 @@ final class OrchardTree extends Model
     public static function forBlock(int $blockId): array
     {
         $stmt = self::pdo()->prepare(
-            'SELECT * FROM orchard_trees WHERE block_id = :b ORDER BY row_number, position_in_row, id'
+            'SELECT * FROM orchard_trees WHERE block_id = :b ORDER BY tree_row, position_in_row, id'
         );
         $stmt->execute(['b' => $blockId]);
         return $stmt->fetchAll();

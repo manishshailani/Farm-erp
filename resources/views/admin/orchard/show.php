@@ -30,7 +30,7 @@ $base = Redirect::basePath();
     <?php foreach ($trees as $t): ?>
     <tr>
         <td><?= e($t['tree_code']) ?></td>
-        <td><?= e(($t['row_number'] ?? '-') . ' / ' . ($t['position_in_row'] ?? '-')) ?></td>
+        <td><?= e(($t['tree_row'] ?? '-') . ' / ' . ($t['position_in_row'] ?? '-')) ?></td>
         <td><?= fdate($t['planting_date']) ?></td>
         <td><span class="badge bg-<?= $t['status'] === 'alive' ? 'success' : 'secondary' ?>"><?= e($t['status']) ?></span></td>
         <td>
