@@ -115,7 +115,20 @@ final class Database
         try {
             $result = $callback($pdo);
             self::$transactionDepth--;
-            if ($isOutermost) {
+            // On MySQL/MariaDB, a DDL statement (CREATE TABLE, ALTER TABLE,
+            // etc.) executed inside the callback causes an implicit commit
+            // of whatever transaction was open -- this is MySQL server
+            // behavior, not something PDO can suppress. That silently ends
+            // the transaction started above, so by this point there may be
+            // nothing left to commit. SQLite has no such implicit-commit
+            // behavior, which is why this was not caught by the test suite
+            // (which runs migrations against SQLite). Guarding with
+            // inTransaction() -- exactly as the catch block below already
+            // guards rollBack() -- makes this correct for both drivers: a
+            // normal (non-DDL) transaction still commits as before, and a
+            // DDL-containing one (migrations) no-ops here because MySQL
+            // already committed each statement itself.
+            if ($isOutermost && $pdo->inTransaction()) {
                 $pdo->commit();
             }
             return $result;
